@@ -3,6 +3,7 @@ package restic
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -22,6 +23,7 @@ import (
 	"github.com/ncw/rclone/fs/operations"
 	"github.com/ncw/rclone/fs/walk"
 	"github.com/spf13/cobra"
+	"golang.org/x/crypto/ssh/terminal"
 	"golang.org/x/net/http2"
 )
 
@@ -116,6 +118,10 @@ these **must** end with /.  Eg
 		cmd.Run(false, true, command, func() error {
 			s := newServer(f, &httpflags.Opt)
 			if stdin {
+				if terminal.IsTerminal(int(os.Stdout.Fd())) {
+					return errors.New("Refusing to run HTTP2 server directly on a terminal, please let restic start rclone")
+				}
+
 				conn := &StdioConn{
 					stdin:  os.Stdin,
 					stdout: os.Stdout,
