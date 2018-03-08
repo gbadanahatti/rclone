@@ -366,7 +366,7 @@ func (s *server) listObjects(w http.ResponseWriter, r *http.Request, remote stri
 
 	if r.Header.Get("Accept") != resticAPIV2 {
 		fs.Errorf(remote, "Restic v2 API required")
-		http.Error(w, http.StatusText(http.StatusNotFound), http.StatusBadRequest)
+		http.Error(w, "Restic v2 API required", http.StatusBadRequest)
 		return
 	}
 
