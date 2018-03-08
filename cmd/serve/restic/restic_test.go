@@ -50,7 +50,7 @@ func TestRestic(t *testing.T) {
 
 	// Run the restic tests
 	runTests := func(path string) {
-		args := []string{"test", "./internal/backend/rest", "-run", "TestBackendRESTExternalServer"}
+		args := []string{"test", "./internal/backend/rest", "-run", "TestBackendRESTExternalServer", "-count=1"}
 		if testing.Verbose() {
 			args = append(args, "-v")
 		}
