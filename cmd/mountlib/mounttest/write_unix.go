@@ -5,6 +5,7 @@ package mounttest
 import (
 	"syscall"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -36,6 +37,9 @@ func TestWriteFileDoubleClose(t *testing.T) {
 	// close it
 	err = out.Close()
 	assert.NoError(t, err)
+
+	// wait for the Release
+	time.Sleep(time.Second)
 
 	// write to the other dup - should produce an error
 	_, err = syscall.Write(fd2, buf)
